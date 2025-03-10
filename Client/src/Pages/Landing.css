@@ -1,0 +1,68 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.navbarL{
+    display: flex;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
+}
+#bg-img {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  z-index: -1; /* Place the background image behind other content */
+}
+.title{
+    font-family: "Bokor", system-ui;
+    color: white;
+    font-size: 45px;
+    margin-left: 2vw;
+}
+.signupbtnL{
+    background-color: rgba(255, 255, 255, 0.8);
+    height: 5vh;
+    width: 10vw;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+
+}
+.loginbtnL{
+    background-color: rgba(255, 255, 255, 0.8);
+    height: 4vh;
+    width: 15vh;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 2vw;
+}
+
+#typed-container {
+    justify-content: center;
+    font-size: 3.5rem;
+    color: rgb(6, 6, 6);
+    margin-left: 32vw;
+    margin-top: 35vh;
+    background-color: rgba(255, 255, 255, 0.8);
+    height: 40vh;
+    width: 40vw;
+    text-align: center;
+    border-radius: 8px;
+
+}
+.heading{
+    color: rgb(8, 8, 8);
+    font-weight: bolder;
+}
+.message1{
+    font-size: 20px;
+    margin-top: 5vh;
+}

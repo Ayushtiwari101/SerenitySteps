@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Bokor&family=Roboto&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+}
+.baap{
+  display: flex;
+  margin-top: 25vh;
+  justify-content: space-evenly;
+  
+}
+.side {
+  background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+  border-radius: 8px;
+  padding: 20px;
+  width: 55vw;
+  margin-left: 5vw;
+  height: 45vh;
+}
+#web-name{
+  font-family: "Bokor", system-ui;
+  font-size: 60px;
+  font-weight: 400;
+  font-style: normal;
+  
+}
+.lform-container{
+  background-color: #fbfdfe;
+  border-radius: 8px;
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  margin-right: 10vw;
+}
+
+.loginform {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 25vw;
+    height: 45vh;
+  }
+  
+  .loginform label {
+    font-weight: bold;
+  }
+  
+  .loginform input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccd0d5;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .loginform input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .loginform input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+.login-btn{
+    height: 3rem;
+    width: 100%;
+    background-color: #1A77F2;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  #signin101{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 6vh;
+    width: 15vw;
+    background-color: #42B62A;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 20px;
+    margin-left: 3.5vw;
+    margin-top: 2vh;
+  }
+  #fp{
+    color: #0866ff;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 2vh;
+    margin-left: 3.5vw;    
+  }
+  #fp:hover{
+    text-decoration: underline;
+  }
+  #line{
+    border-bottom: 1px solid #cccdce;
+    margin-top: 1vh;
+    margin: 20px 16px;
+  }
+
+  

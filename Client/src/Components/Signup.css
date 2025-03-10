@@ -1,0 +1,76 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.navbar{
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.1);
+    height: 100px;
+    justify-content: space-between;
+    align-items: center;
+}
+.title{
+  text-decoration: none;
+}
+.sform-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;   
+}
+
+.signupform {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    height: 82vh;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+  }
+  
+  .signupform label {
+    font-weight: bold;
+  }
+  
+  .signupform input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .signupform input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .signupform input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+.signup-btn{
+    height: 5vh;
+    width: 8vw;
+    border-radius: 8px;
+    margin-left: 7vw;
+    font-weight: bolder;
+  }
+  .google-auth{
+    margin-top: 2vh;
+    margin-left: 3.5vw;
+
+  }
+ 
+.Boxx{
+  margin-top: 1vh;
+}
