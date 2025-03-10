@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Bokor&family=Roboto&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+}
+.home-navbar{
+    display: flex;
+    background-color: rgba(9, 9, 9, 0.8);
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+#home-bg{
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    position: fixed;
+  
+    top: 0;
+    left: 0;
+    z-index: -1; /* Place the background image behind other content */
+  }
+.continueprev{
+    display: flex;
+    background-color: #030303;
+    height: 30vh;
+    width: 95vw;
+    border-radius: 20px;
+    align-items: center;
+    margin-left: 2vw;
+    margin-top: 5vh;
+}
+.prevsection{
+    display: flex;
+    align-items: center;
+    height: 25vh;
+    width: 92vw;
+    background-color: rgb(243, 248, 252);
+    border-radius: 20px;
+    margin-left: 1.5vw;
+    padding: 10px;
+    text-align: center;
+    color: black;
+}
+.sssection{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    background-color: rgb(0, 0, 0,0.5) ;
+    height: 150vh;
+    width: 70vw;
+    align-items: center;
+    margin-left: 15vw;
+    margin-top: 5vh;
+    border-radius: 15px;
+    margin-bottom: 5vh;
+}
+.home-head{
+    display: flex;
+    color: rgb(255, 255, 255);
+    margin-top: 38vh;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 8px;
+    width: 15vw;
+    justify-content: center;
+    position: absolute;
+}
+.homeblock{
+    display: flex;
+    background-color: #020202;
+    height: 58vh;
+    width: 20vw;
+    margin-left: 7vw;
+    border-radius: 15px;
+    border: 8px solid white;
+}
+.homeblock:hover{
+    transform: scale(1.1);
+    transition: 0.5s;
+} 
+.home-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5vh;
+    width: 10vw;
+    color: rgb(11, 11, 11);
+    text-decoration: none;
+    border-radius: 8px;
+    background-color: rgb(252, 249, 249);
+    margin-top: 45vh;
+    margin-left: 2.5vw;
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    
+}
+
+.homebox{
+    display: flex;
+    align-items: self-start;
+    height: 60%;
+    width: 15vw;
+    background-color: rgb(247, 244, 244);
+    margin-left: 2vw;
+    margin-top: 3vh;
+    border-radius: 8px;
+    
+}
+.homebox-logo{
+    height: 35vh;
+    width: 15vw;
+    border-radius: 8px;
+    
+}
+
