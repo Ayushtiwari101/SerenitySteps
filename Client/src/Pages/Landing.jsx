@@ -1,44 +1,57 @@
-import './Landing.css';
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Typed from 'typed.js';
-import { useEffect, useRef } from 'react';
+import './Landing.css';
 
-function Land() {
-    const typedRef = useRef(null);
+const Landing = () => {
+  const typedRef = useRef(null);
 
-    useEffect(() => {
-      const options = {
-        strings: ["Hello and Welcome to <br /><span class='heading'>Serenity Steps</span>"],
-        typeSpeed: 70,
-        loop: true
-      };
+  useEffect(() => {
+    if (!typedRef.current) return;
+    
+    const options = {
+      strings: ["Hello and Welcome to <br /><span class='heading'>Serenity Steps</span>"],
+      typeSpeed: 70,
+      loop: true,
+      showCursor: false,
+    };
   
-      const typed = new Typed(typedRef.current, options);
+    const typed = new Typed(typedRef.current, options);
   
-      return () => {
-        typed.destroy();
-      };
-    }, []);
+    return () => {
+      typed.destroy();
+    };
+  }, []);
 
-    return(
-        <>
-            <nav>
-                <div className='navbarL'>
-                    <h1 className='title'>Serenity Steps</h1>
-                    <Link to="/Login"><button className='loginbtnL'>Login</button></Link>
-                </div>
-            </nav>
-            <img src="./Bg_capstone.jpeg" alt="" id='bg-img'/>
-            <div id="typed-container">
-                      <span ref={typedRef}></span>
-                      <br />
-                      <div className='message1'><h3 >Start your journey by signing up</h3></div>
-                    
-                    <Link to="/Signup"><button className='signupbtnL'>Signup</button></Link>
-            </div>
-                    
-        </>
-    )
-}
+  return (
+    <>
+      <nav>
+        <div className='navbarL'>
+          <h1 className='titleL'>Serenity Steps</h1>
+          <Link to="/login">
+            <button className='loginbtnL'>Login</button>
+          </Link>
+        </div>
+      </nav>
+      
+      <img 
+        src="./Bg_capstone.jpeg" 
+        alt="Serene background" 
+        id='bg-img'
+      />
+      
+      <div id="typed-container">
+        <span ref={typedRef}></span>
+        <br />
+        <div className='message1'>
+          <h3>Begin your journey to mindfulness and peace</h3>
+        </div>
+      </div>
+        <Link to="/signup">
+          <button className='signupbtnL'>Signup</button>
+        </Link>
+    </>
+  );
+};
 
-export default Land;
+export default Landing;

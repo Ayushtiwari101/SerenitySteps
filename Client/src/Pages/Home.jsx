@@ -7,7 +7,7 @@ function Home(){
         <>
             <nav>
                 <div className='home-navbar'>
-                    <h1 className='title'>Serenity Steps</h1>                    
+                    <h1 className='Stitle'>Serenity Steps</h1>                    
                 </div> 
             </nav>
             <img src="./Bg_capstone.jpeg" alt="" id='home-bg'/>

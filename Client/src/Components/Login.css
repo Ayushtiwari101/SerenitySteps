@@ -5,17 +5,24 @@
 }
 .baap{
   display: flex;
-  margin-top: 25vh;
-  justify-content: space-evenly;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10vh;
+  width: 100vw;
+  gap: 3vw;
   
 }
-.side {
-  background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
-  border-radius: 8px;
-  padding: 20px;
-  width: 55vw;
-  margin-left: 5vw;
-  height: 45vh;
+.login-side {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 20px;
+    width: 45vw;
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 #web-name{
   font-family: "Bokor", system-ui;
@@ -24,95 +31,88 @@
   font-style: normal;
   
 }
-.lform-container{
-  background-color: #fbfdfe;
+.lform-container {
+  background: #ffffff;
+  padding: 40px;
   border-radius: 8px;
-  display: flex;
-  align-items: start;
-  justify-content: start;
-  margin-right: 10vw;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  width: 350px;
 }
 
-.loginform {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 25vw;
-    height: 45vh;
-  }
-  
-  .loginform label {
-    font-weight: bold;
-  }
-  
-  .loginform input {
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ccd0d5;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .loginform input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .loginform input[type="submit"]:hover {
-    background-color: #45a049;
-  }
-  
-.login-btn{
-    height: 3rem;
-    width: 100%;
-    background-color: #1A77F2;
-    color: #ffffff;
-    font-weight: bold;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  #signin101{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 6vh;
-    width: 15vw;
-    background-color: #42B62A;
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 20px;
-    margin-left: 3.5vw;
-    margin-top: 2vh;
-  }
-  #fp{
-    color: #0866ff;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    margin-top: 2vh;
-    margin-left: 3.5vw;    
-  }
-  #fp:hover{
-    text-decoration: underline;
-  }
-  #line{
-    border-bottom: 1px solid #cccdce;
-    margin-top: 1vh;
-    margin: 20px 16px;
-  }
+/* 🔹 Form Inputs */
+.loginform input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccd0d5;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.loginform input:focus {
+  border-color: #1877f2;
+  outline: none;
+  box-shadow: 0 0 5px rgba(24, 119, 242, 0.5);
+}
+
+/* 🔹 Login Button */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #1877f2;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #155dbf;
+  transform: scale(1.02);
+}
+
+/* 🔹 Forgot Password Link */
+#fp {
+  display: block;
+  text-align: center;
+  color: #1877f2;
+  font-size: 14px;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+#fp:hover {
+  text-decoration: underline;
+}
+
+/* 🔹 Create New Account Button */
+#signin101 {
+  display: block;
+  text-align: center;
+  padding: 12px;
+  background-color: #42b72a;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  font-size: 16px;
+  text-decoration: none;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+#signin101:hover {
+  background-color: #36a420;
+  transform: scale(1.02);
+}
+
+/* 🔹 Divider Line */
+#line {
+  border-bottom: 1px solid #ccd0d5;
+  margin: 20px 0;
+}
 
   
