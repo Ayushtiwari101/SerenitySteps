@@ -26,15 +26,16 @@ function Games(){
                     </div>
                 </div>
                 <div className="gameblock">
-                    <div className='gamebox'><img src="/" alt="" className='gamebox-logo'/>
-                        <a href="" className="game-btn">Coming Soon</a>
+                    <div className='gamebox'><img src="/draw-battle.png" alt="" className='gamebox-logo'/>
+                        <a href="https://drawbattle.io/" className="game-btn">Play Drawbattle</a>
                     </div>
                 </div>
                 <div className="gameblock">
-                    <div className='gamebox'><img src="/" alt="" className='gamebox-logo'/>
-                        <a href="" className="game-btn">Coming Soon</a>
+                    <div className='gamebox'><img src="/brain-test.jpeg" alt="" className='gamebox-logo'/>
+                        <a href="https://poki.com/en/g/brain-test-tricky-words" className="game-btn">Brain Test</a>
                     </div>
                 </div>
+                
                 
                 
             </div>
