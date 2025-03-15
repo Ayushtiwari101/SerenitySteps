@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './Meditation.css';
 
 const Meditation = () => {
@@ -10,7 +11,7 @@ const Meditation = () => {
   const [fakeDuration, setFakeDuration] = useState(600);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const outlineLength = 2 * Math.PI * 216.5; // Circumference of the circle
+  const outlineLength = 2 * Math.PI * 216.5;
 
   useEffect(() => {
     outline.current.style.strokeDashoffset = outlineLength;
@@ -77,6 +78,10 @@ const Meditation = () => {
 
   return (
     <div className="app">
+      <nav className="meditation-nav">
+        <Link to="/home" className="back-button">← Back to Home</Link>
+        <h1 className='session-head'>Meditation Session</h1>
+      </nav>
       <div className="vid-container">
         <video ref={video} loop>
           <source src="../video/rain.mp4" type="video/mp4" />
