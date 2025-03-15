@@ -19,7 +19,7 @@ function Login() {
             password: password
         };
         try {
-            const response = await axios.post("https://s55-ayush-capstone-serenitysteps.onrender.com/login", {username, password} );
+            const response = await axios.post("https://serenitysteps.onrender.com/login", {username, password} );
             localStorage.setItem('token', response.data.token);
             navigate('/home');
         } catch (error) {
@@ -34,9 +34,8 @@ function Login() {
         
         <div className="baap">
             
-            <div className='side'>
+            <div className='login-side'>
                 <div >
-                    <img src="" alt="" />
                     <h1 id='web-name'>Serenity Steps</h1>
                 </div>
 
