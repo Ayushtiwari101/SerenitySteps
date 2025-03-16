@@ -34,7 +34,7 @@ function Home(){
                     </div>
                 </div>
                 <div className="homeblock">
-                    <div className='homebox'><img src="/diet.png" alt="" className='homebox-logo' /><h2 className='home-head'>Diet Plan</h2><a href="/diet" className="home-btn">Get Diet</a></div>
+                    <div className='homebox'><img src="/diet.png" alt="" className='homebox-logo' /><h2 className='home-head'>Diet Plan</h2><a  className="home-btn">Coming Soon</a></div>
                 </div>
                 
             </div>

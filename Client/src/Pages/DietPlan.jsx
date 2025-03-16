@@ -1,459 +1,325 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Calculator, ChevronDown, Plus, Trash2 } from 'lucide-react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import './DietPlan.css';
 
-function DietPlan() {
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('male');
-  const [activityLevel, setActivityLevel] = useState('moderate');
-  const [goal, setGoal] = useState('maintain');
-  const [unit, setUnit] = useState('kg');
-  const [heightUnit, setHeightUnit] = useState('cm');
-  const [showResults, setShowResults] = useState(false);
-  const [calories, setCalories] = useState(0);
-  const [protein, setProtein] = useState(0);
-  const [carbs, setCarbs] = useState(0);
-  const [fats, setFats] = useState(0);
-  const [waterIntake, setWaterIntake] = useState(0);
-  const [availableMeals, setAvailableMeals] = useState({
+const API_URL = 'http://localhost:5000'; // Update with your backend URL
+
+const foodCategories = {
+  protein: [
+    { name: 'Chicken Breast', calories: 165, protein: 31, carbs: 0, fat: 3.6 },
+    { name: 'Salmon', calories: 208, protein: 22, carbs: 0, fat: 13 },
+    { name: 'Eggs', calories: 155, protein: 13, carbs: 1.1, fat: 11 },
+    { name: 'Greek Yogurt', calories: 59, protein: 10, carbs: 3.6, fat: 0.4 },
+    { name: 'Tofu', calories: 144, protein: 15.9, carbs: 3.3, fat: 8.7 },
+  ],
+  carbs: [
+    { name: 'Brown Rice', calories: 216, protein: 5, carbs: 45, fat: 1.8 },
+    { name: 'Sweet Potato', calories: 103, protein: 2, carbs: 23.6, fat: 0.2 },
+    { name: 'Quinoa', calories: 120, protein: 4.4, carbs: 21.3, fat: 1.9 },
+    { name: 'Oats', calories: 307, protein: 13, carbs: 55, fat: 5 },
+    { name: 'Whole Wheat Bread', calories: 69, protein: 3.6, carbs: 12, fat: 1 },
+  ],
+  fats: [
+    { name: 'Avocado', calories: 160, protein: 2, carbs: 8.5, fat: 14.7 },
+    { name: 'Almonds', calories: 164, protein: 6, carbs: 6, fat: 14 },
+    { name: 'Olive Oil', calories: 119, protein: 0, carbs: 0, fat: 13.5 },
+    { name: 'Chia Seeds', calories: 138, protein: 4.7, carbs: 12, fat: 8.7 },
+    { name: 'Peanut Butter', calories: 188, protein: 8, carbs: 6, fat: 16 },
+  ],
+  vegetables: [
+    { name: 'Broccoli', calories: 55, protein: 3.7, carbs: 11.2, fat: 0.6 },
+    { name: 'Spinach', calories: 23, protein: 2.9, carbs: 3.6, fat: 0.4 },
+    { name: 'Kale', calories: 49, protein: 4.3, carbs: 8.8, fat: 0.9 },
+    { name: 'Bell Peppers', calories: 31, protein: 1, carbs: 6, fat: 0.3 },
+    { name: 'Carrots', calories: 41, protein: 0.9, carbs: 9.6, fat: 0.2 },
+  ],
+};
+
+const DietPlan = () => {
+  const [userStats, setUserStats] = useState({
+    weight: '',
+    height: '',
+    age: '',
+    gender: 'male',
+    activityLevel: 'sedentary',
+    goal: 'maintain',
+    unit: 'kg',
+    heightUnit: 'cm'
+  });
+
+  const [nutritionPlan, setNutritionPlan] = useState(null);
+  const [mealPlan, setMealPlan] = useState({
     breakfast: [],
     lunch: [],
     dinner: [],
-    snack: []
+    snacks: [],
   });
-  const [selectedMeals, setSelectedMeals] = useState({
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-    snack: null
-  });
-  const [userId, setUserId] = useState(null); // Get this from your auth system
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchMeals = async () => {
-      try {
-        setLoading(true);
-        const categories = ['breakfast', 'lunch', 'dinner', 'snack'];
-        const meals = {};
-        
-        for (const category of categories) {
-          const response = await axios.get(`/api/meals/${category}`);
-          meals[category] = response.data;
-        }
-        
-        setAvailableMeals(meals);
-        setError(null);
-      } catch (error) {
-        console.error('Error fetching meals:', error);
-        setError('Failed to load meal options. Please try again.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchNutritionPlan = async () => {
-      if (!userId) return;
-
-      try {
-        setLoading(true);
-        const response = await axios.get(`/api/nutrition-plan/${userId}`);
-        const plan = response.data;
-        
-        if (plan) {
-          setWeight(plan.weight);
-          setHeight(plan.height);
-          setAge(plan.age);
-          setGender(plan.gender);
-          setActivityLevel(plan.activityLevel);
-          setGoal(plan.goal);
-          setUnit(plan.unit);
-          setHeightUnit(plan.heightUnit);
-          setCalories(plan.dailyCalories);
-          setProtein(plan.protein);
-          setCarbs(plan.carbs);
-          setFats(plan.fats);
-          setWaterIntake(plan.waterIntake);
-          setSelectedMeals(plan.selectedMeals);
-          setShowResults(true);
-        }
-        setError(null);
-      } catch (error) {
-        console.error('Error fetching nutrition plan:', error);
-        setError('Failed to load your nutrition plan. Please try again.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMeals();
-    fetchNutritionPlan();
-  }, [userId]);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserStats(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleCalculate = async (e) => {
     e.preventDefault();
-    
-    if (!weight || !height || !age) {
-      setError('Please fill in all required fields');
-      return;
-    }
-
     try {
-      setLoading(true);
-      const response = await axios.post('/api/nutrition-plan', {
-        userId,
-        weight,
-        height,
-        age,
-        gender,
-        activityLevel,
-        goal,
-        unit,
-        heightUnit
+      const response = await axios.post(`${API_URL}/nutrition-plan`, {
+        userId: '123', // Replace with actual user ID from auth
+        ...userStats
       });
       
-      const plan = response.data;
-      setCalories(plan.dailyCalories);
-      setProtein(plan.protein);
-      setCarbs(plan.carbs);
-      setFats(plan.fats);
-      setWaterIntake(plan.waterIntake);
-      setShowResults(true);
-      setError(null);
+      setNutritionPlan(response.data);
+      toast.success('Nutrition plan calculated successfully!');
     } catch (error) {
       console.error('Error calculating nutrition plan:', error);
-      setError('Failed to calculate nutrition plan. Please try again.');
-    } finally {
-      setLoading(false);
+      toast.error(error.response?.data?.error || 'Failed to calculate nutrition plan');
     }
   };
 
-  const handleMealSelection = async (category, mealId) => {
+  const addFoodToMeal = async (meal, food) => {
     try {
-      setLoading(true);
-      const updatedMeals = {
-        ...selectedMeals,
-        [category]: mealId
+      setMealPlan(prev => ({
+        ...prev,
+        [meal]: [...prev[meal], food]
+      }));
+
+      // Save meal selection to backend
+      await axios.post(`${API_URL}/save-meals`, {
+        userId: '123', // Replace with actual user ID
+        selectedMeals: {
+          ...mealPlan,
+          [meal]: [...mealPlan[meal], food]
+        },
+        date: new Date()
+      });
+
+      toast.success(`Added ${food.name} to ${meal}`);
+    } catch (error) {
+      console.error('Error saving meal:', error);
+      toast.error('Failed to save meal selection');
+    }
+  };
+
+  const removeFoodFromMeal = async (meal, index) => {
+    try {
+      const updatedMealPlan = {
+        ...mealPlan,
+        [meal]: mealPlan[meal].filter((_, i) => i !== index)
       };
-      
-      setSelectedMeals(updatedMeals);
-      
-      await axios.post('/api/save-meals', {
-        userId,
-        selectedMeals: updatedMeals
+
+      setMealPlan(updatedMealPlan);
+
+      // Update meal selection in backend
+      await axios.post(`${API_URL}/save-meals`, {
+        userId: '123', // Replace with actual user ID
+        selectedMeals: updatedMealPlan,
+        date: new Date()
       });
-      
-      setError(null);
+
+      toast.success('Meal removed successfully');
     } catch (error) {
-      console.error('Error saving meal selection:', error);
-      setError('Failed to save meal selection. Please try again.');
-    } finally {
-      setLoading(false);
+      console.error('Error removing meal:', error);
+      toast.error('Failed to remove meal');
     }
   };
 
-  const handleRegenerateMealPlan = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.post('/api/regenerate-meals', {
-        userId,
-        calories,
-        protein,
-        carbs,
-        fats
-      });
-      
-      setSelectedMeals(response.data.selectedMeals);
-      setError(null);
-    } catch (error) {
-      console.error('Error regenerating meal plan:', error);
-      setError('Failed to regenerate meal plan. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+  const calculateMealTotals = (meal) => {
+    return mealPlan[meal].reduce((acc, food) => ({
+      calories: acc.calories + food.calories,
+      protein: acc.protein + food.protein,
+      carbs: acc.carbs + food.carbs,
+      fat: acc.fat + food.fat
+    }), { calories: 0, protein: 0, carbs: 0, fat: 0 });
   };
-
-  const handleReset = () => {
-    setShowResults(false);
-    setError(null);
-  };
-
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>Loading...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="diet-plan-container">
-      <nav>
-        <div className="navbar">
-          <Link to="/home" className="title">Serenity Steps</Link>
-        </div> 
+      <nav className="diet-nav">
+        <Link to="/home" className="back-button">← Back to Home</Link>
+        <h1 className="nav-title">Diet Planner</h1>
       </nav>
-      
-      <div className="hero-section">
-        <img 
-          src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1032&q=80" 
-          alt="Diet Plan background" 
-          className="hero-image"
-        />
-        <h1 className="hero-title">Your Personalized Nutrition Journey</h1>
-      </div>
 
-      {error && (
-        <div className="error-message">
-          {error}
-        </div>
-      )}
-      
-      <div className="diet-content">
-        {!showResults ? (
-          <div className="calculator-container">
-            <h2>Calculate Your Nutrition Needs</h2>
-            <form onSubmit={handleCalculate}>
-              <div className="form-group">
-                <label htmlFor="weight">Weight</label>
-                <div className="input-with-unit">
-                  <input 
-                    type="number" 
-                    id="weight" 
-                    value={weight} 
-                    onChange={(e) => setWeight(e.target.value)}
-                    min="1"
-                    required
-                    placeholder="Enter your weight"
-                  />
-                  <select 
-                    value={unit} 
-                    onChange={(e) => setUnit(e.target.value)}
-                  >
-                    <option value="kg">kg</option>
-                    <option value="lbs">lbs</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="height">Height</label>
-                <div className="input-with-unit">
-                  <input 
-                    type="number" 
-                    id="height" 
-                    value={height} 
-                    onChange={(e) => setHeight(e.target.value)}
-                    min="1"
-                    required
-                    placeholder="Enter your height"
-                  />
-                  <select 
-                    value={heightUnit} 
-                    onChange={(e) => setHeightUnit(e.target.value)}
-                  >
-                    <option value="cm">cm</option>
-                    <option value="in">in</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="age">Age</label>
-                <input 
-                  type="number" 
-                  id="age" 
-                  value={age} 
-                  onChange={(e) => setAge(e.target.value)}
-                  min="1"
-                  max="120"
+      <div className="main-content">
+        <section className="calculator-section">
+          <h2><Calculator className="inline-icon" /> Nutrition Calculator</h2>
+          <form onSubmit={handleCalculate} className="calculator-form">
+            <div className="form-group">
+              <label>Weight</label>
+              <div className="input-with-unit">
+                <input
+                  type="number"
+                  name="weight"
+                  value={userStats.weight}
+                  onChange={handleInputChange}
                   required
-                  placeholder="Enter your age"
                 />
-              </div>
-              
-              <div className="form-group">
-                <label>Gender</label>
-                <div className="radio-group">
-                  <label className="radio-label">
-                    <input 
-                      type="radio" 
-                      name="gender" 
-                      value="male" 
-                      checked={gender === 'male'} 
-                      onChange={() => setGender('male')}
-                    />
-                    Male
-                  </label>
-                  <label className="radio-label">
-                    <input 
-                      type="radio" 
-                      name="gender" 
-                      value="female" 
-                      checked={gender === 'female'} 
-                      onChange={() => setGender('female')}
-                    />
-                    Female
-                  </label>
-                </div>
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="activity">Activity Level</label>
-                <select 
-                  id="activity" 
-                  value={activityLevel} 
-                  onChange={(e) => setActivityLevel(e.target.value)}
-                  className="select-input"
-                >
-                  <option value="sedentary">Sedentary (little or no exercise)</option>
-                  <option value="light">Light (exercise 1-3 days/week)</option>
-                  <option value="moderate">Moderate (exercise 3-5 days/week)</option>
-                  <option value="active">Active (exercise 6-7 days/week)</option>
-                  <option value="veryActive">Very Active (hard exercise & physical job)</option>
+                <select name="unit" value={userStats.unit} onChange={handleInputChange}>
+                  <option value="kg">kg</option>
+                  <option value="lbs">lbs</option>
                 </select>
               </div>
-              
-              <div className="form-group">
-                <label htmlFor="goal">Goal</label>
-                <select 
-                  id="goal" 
-                  value={goal} 
-                  onChange={(e) => setGoal(e.target.value)}
-                  className="select-input"
-                >
-                  <option value="lose">Lose Weight</option>
-                  <option value="maintain">Maintain Weight</option>
-                  <option value="gain">Gain Weight</option>
+            </div>
+
+            <div className="form-group">
+              <label>Height</label>
+              <div className="input-with-unit">
+                <input
+                  type="number"
+                  name="height"
+                  value={userStats.height}
+                  onChange={handleInputChange}
+                  required
+                />
+                <select name="heightUnit" value={userStats.heightUnit} onChange={handleInputChange}>
+                  <option value="cm">cm</option>
+                  <option value="in">inches</option>
                 </select>
               </div>
-              
-              <button type="submit" className="calculate-button">
-                Calculate My Plan
-              </button>
-            </form>
-          </div>
-        ) : (
-          <div className="results-container">
-            <div className="nutrition-summary">
-              <h2>Your Daily Nutrition Summary</h2>
-              
-              <div className="macro-cards">
-                <div className="macro-card">
-                  <div className="macro-icon calories">🔥</div>
-                  <h3>Calories</h3>
-                  <p>{calories}</p>
-                </div>
-                
-                <div className="macro-card">
-                  <div className="macro-icon protein">🥩</div>
-                  <h3>Protein</h3>
-                  <p>{protein}g</p>
-                </div>
-                
-                <div className="macro-card">
-                  <div className="macro-icon carbs">🍚</div>
-                  <h3>Carbs</h3>
-                  <p>{carbs}g</p>
-                </div>
-                
-                <div className="macro-card">
-                  <div className="macro-icon fats">🥑</div>
-                  <h3>Fats</h3>
-                  <p>{fats}g</p>
-                </div>
-                
-                <div className="macro-card">
-                  <div className="macro-icon water">💧</div>
-                  <h3>Water</h3>
-                  <p>{waterIntake}L</p>
-                </div>
-              </div>
             </div>
-            
-            <div className="meal-plan-section">
-              <div className="meal-plan-header">
-                <h2>Customize Your Meal Plan</h2>
-                <button 
-                  className="regenerate-button"
-                  onClick={handleRegenerateMealPlan}
-                  disabled={loading}
-                >
-                  Regenerate Meals
-                </button>
-              </div>
-              
-              {Object.keys(availableMeals).map((category) => (
-                <div key={category} className="meal-category">
-                  <h3>{category.charAt(0).toUpperCase() + category.slice(1)} Options</h3>
-                  <div className="meal-options">
-                    {availableMeals[category].map((meal) => (
-                      <div
-                        key={meal._id}
-                        className={`meal-option ${selectedMeals[category] === meal._id ? 'selected' : ''}`}
-                        onClick={() => handleMealSelection(category, meal._id)}
-                      >
-                        <h4>{meal.name}</h4>
-                        <p className="meal-description">{meal.description}</p>
-                        <div className="meal-macros">
-                          <span>Calories: {meal.calories}</span>
-                          <span>P: {meal.protein}g</span>
-                          <span>C: {meal.carbs}g</span>
-                          <span>F: {meal.fats}g</span>
-                        </div>
-                        {meal.foodGroup && (
-                          <div className="meal-tag">{meal.foodGroup}</div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+
+            <div className="form-group">
+              <label>Age</label>
+              <input
+                type="number"
+                name="age"
+                value={userStats.age}
+                onChange={handleInputChange}
+                required
+              />
             </div>
-            
-            <div className="nutrition-tips">
-              <h2>Nutrition Tips</h2>
-              <div className="tips-grid">
-                <div className="tip-card">
-                  <div className="tip-icon">🥗</div>
-                  <h3>Balanced Diet</h3>
-                  <p>Eat a variety of colorful fruits and vegetables for essential nutrients.</p>
-                </div>
-                <div className="tip-card">
-                  <div className="tip-icon">💧</div>
-                  <h3>Stay Hydrated</h3>
-                  <p>Drink water throughout the day, especially before meals.</p>
-                </div>
-                <div className="tip-card">
-                  <div className="tip-icon">🍳</div>
-                  <h3>Meal Prep</h3>
-                  <p>Plan and prepare meals in advance to maintain healthy eating habits.</p>
-                </div>
-                <div className="tip-card">
-                  <div className="tip-icon">⏰</div>
-                  <h3>Regular Meals</h3>
-                  <p>Don't skip meals, especially breakfast, to maintain stable energy levels.</p>
-                </div>
-              </div>
+
+            <div className="form-group">
+              <label>Gender</label>
+              <select name="gender" value={userStats.gender} onChange={handleInputChange}>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
             </div>
-            
-            <button 
-              className="recalculate-button"
-              onClick={handleReset}
-              disabled={loading}
-            >
-              Recalculate Plan
+
+            <div className="form-group">
+              <label>Activity Level</label>
+              <select name="activityLevel" value={userStats.activityLevel} onChange={handleInputChange}>
+                <option value="sedentary">Sedentary</option>
+                <option value="light">Light Exercise</option>
+                <option value="moderate">Moderate Exercise</option>
+                <option value="active">Active</option>
+                <option value="veryActive">Very Active</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Goal</label>
+              <select name="goal" value={userStats.goal} onChange={handleInputChange}>
+                <option value="lose">Lose Weight</option>
+                <option value="maintain">Maintain Weight</option>
+                <option value="gain">Gain Weight</option>
+              </select>
+            </div>
+
+            <button type="submit" className="calculate-btn">
+              Calculate Plan
             </button>
-          </div>
-        )}
+          </form>
+
+          {nutritionPlan && (
+            <div className="results">
+              <div className="result-card">
+                <h3>Daily Calories</h3>
+                <p className="result-value">{nutritionPlan.dailyCalories}</p>
+                <p className="result-description">Recommended daily intake</p>
+              </div>
+              <div className="result-card">
+                <h3>Protein</h3>
+                <p className="result-value">{nutritionPlan.protein}g</p>
+                <p className="result-description">Daily protein target</p>
+              </div>
+              <div className="result-card">
+                <h3>Carbs</h3>
+                <p className="result-value">{nutritionPlan.carbs}g</p>
+                <p className="result-description">Daily carbs target</p>
+              </div>
+              <div className="result-card">
+                <h3>Fats</h3>
+                <p className="result-value">{nutritionPlan.fats}g</p>
+                <p className="result-description">Daily fats target</p>
+              </div>
+            </div>
+          )}
+        </section>
+
+        <section className="meal-planner-section">
+          <h2>Custom Meal Planner</h2>
+          
+          {['breakfast', 'lunch', 'dinner', 'snacks'].map(meal => (
+            <div key={meal} className="meal-section">
+              <h3>{meal.charAt(0).toUpperCase() + meal.slice(1)}</h3>
+              
+              <div className="food-selector">
+                {Object.entries(foodCategories).map(([category, foods]) => (
+                  <div key={category} className="food-category">
+                    <h4>{category.charAt(0).toUpperCase() + category.slice(1)}</h4>
+                    <div className="food-list">
+                      {foods.map((food, index) => (
+                        <div key={index} className="food-item">
+                          <span>{food.name}</span>
+                          <button
+                            onClick={() => addFoodToMeal(meal, food)}
+                            className="add-food-btn"
+                          >
+                            <Plus size={16} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="selected-foods">
+                {mealPlan[meal].map((food, index) => (
+                  <div key={index} className="selected-food-item">
+                    <span>{food.name}</span>
+                    <div className="food-stats">
+                      <span>{food.calories} cal</span>
+                      <span>{food.protein}g protein</span>
+                      <span>{food.carbs}g carbs</span>
+                      <span>{food.fat}g fat</span>
+                    </div>
+                    <button
+                      onClick={() => removeFoodFromMeal(meal, index)}
+                      className="remove-food-btn"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+
+                {mealPlan[meal].length > 0 && (
+                  <div className="meal-totals">
+                    <h4>Meal Totals</h4>
+                    <div className="totals-stats">
+                      {Object.entries(calculateMealTotals(meal)).map(([key, value]) => (
+                        <span key={key}>
+                          {key}: {Math.round(value)}
+                          {key === 'calories' ? ' cal' : 'g'}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </section>
       </div>
     </div>
   );
-}
+};
 
 export default DietPlan;
