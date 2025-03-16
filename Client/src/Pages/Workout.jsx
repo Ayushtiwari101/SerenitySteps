@@ -387,10 +387,11 @@ function Workout() {
   return (
     <div className="workout-container">
       <nav>
-        <div className='navbar'>
-          <Link to="/home" className='title'><h1>Serenity Steps</h1></Link>
-        </div> 
-      </nav>
+                <div className='workout-navbar'>
+                <Link to="/home" className="back-button">← Back to Home</Link>
+                <h1 className='workout-head'>Workout Session</h1>                          
+                </div> 
+            </nav>
       <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Workout background" id='workout-bg'/>
       
       <div className="workout-content">
